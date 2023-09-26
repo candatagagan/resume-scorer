@@ -3,8 +3,6 @@
     "s3_path" :[{
         "raw": "s3://gagan-s-bucket/resume_raw_data/",
         "saved": "s3://gagan-s-bucket/resume_data/",
-        "transformed": "s3://gagan-s-bucket/resume_data_cleaned/",
-        "aws_access_key_id": "AKIAXZV2YEWWPXRTAG5X",
-        "aws_secret_access_key": "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"
+        "transformed": "s3://gagan-s-bucket/resume_data_cleaned/"
     }]
 }
