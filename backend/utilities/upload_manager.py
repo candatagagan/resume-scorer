@@ -3,10 +3,7 @@ import boto3
 from botocore.exceptions import NoCredentialsError
 import zipfile
 
-aws_cred = {
-    "aws_access_key_id": "AKIAXZV2YEWWPXRTAG5X",
-    "aws_secret_access_key": "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"
-}
+
 
 path = "/workspace/resume-scorer/ziptest.zip"
 
