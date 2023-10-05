@@ -1,8 +1,10 @@
 from utilities.resume_ai import Sentence_Similarity
 import json
+from fastapi import FastAPI
 
+app = FastAPI()
 
-variables_file = open('/workspace/resume-scorer/backend/utilities/variables.json')
+variables_file = open('utilities/variables.json')
 
 variables = json.load(variables_file)
 
@@ -20,9 +22,12 @@ def score_calculator(input_sentence, compare_sentences, model) -> dict:
     score_dict = dict(zip(compare_sentences, score))
     return score_dict  
 
-if __name__ == "__main__":
-    score_calculator(
+
+@app.get('/results')
+async def send_result():
+    result = score_calculator(
                     input_sentence=input_sentence,
                     compare_sentences=compare_sentences, 
                     model=variables["model"]
                     )
+    return result
