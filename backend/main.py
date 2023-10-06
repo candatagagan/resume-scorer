@@ -1,4 +1,4 @@
-from utilities.resume_ai import Sentence_Similarity, Scoring
+from utilities.resume_ai import Sentence_Similarity, Scoring_Experience, Skill_Similarity
 import json
 from fastapi import FastAPI
 
@@ -16,6 +16,8 @@ variables_file = open('utilities/variables.json')
 variables = json.load(variables_file)
 
 sen = Sentence_Similarity()
+
+skill = Skill_Similarity(variables['skills_data'], variables["skill_column"])
 
 
 
@@ -39,7 +41,7 @@ async def receive_sentences(data: dict):
 
 
 
-@app.get('/results')
+@app.get('/results_experience')
 async def send_result():
     main_dict = {}
     global received_data
@@ -52,7 +54,7 @@ async def send_result():
                         )
 
 
-        scores = Scoring(results_dict=calculated_scores, threshold=variables["threshold"])
+        scores = Scoring_Experience(results_dict=calculated_scores, threshold=variables["threshold"])
 
         main_dict[input_sentence] = scores.filter_dict()
     return main_dict
