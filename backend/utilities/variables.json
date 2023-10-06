@@ -10,5 +10,6 @@
         "raw": "s3://gagan-s-bucket/resume_raw_data/",
         "saved": "s3://gagan-s-bucket/resume_data/",
         "transformed": "s3://gagan-s-bucket/resume_data_cleaned/"
-    }]
+    }],
+    "dynamo_table_name": "processed_resume_data"
 }

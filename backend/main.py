@@ -36,7 +36,7 @@ def score_calculator(input_sentence, compare_sentences, model) -> dict:
 async def receive_sentences(data: dict):
     global received_data
     received_data = data
-    return {"message": "Data Received Successfully"}
+    return received_data
 
 
 
