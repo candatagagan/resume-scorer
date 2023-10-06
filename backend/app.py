@@ -20,7 +20,7 @@ data = {
     "talent_skills": ["mechanic", "database administrator", "science"]
 }
 
-port = "https://8000-candatagaga-resumescore-5mpyh2khpcd.ws-us105.gitpod.io"
+port = "https://8000-candatagaga-resumescore-cpa35dk4y0m.ws-us105.gitpod.io"
 
 requests.post(f"{port}/input_sentences", json=data)
 
@@ -59,7 +59,5 @@ mongo.insert_json(
     }
 )
 
-"""
-"""
 
 print("completed")
