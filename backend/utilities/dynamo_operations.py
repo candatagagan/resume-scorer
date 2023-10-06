@@ -1,7 +1,7 @@
 from boto3 import resource
 
 
-class Dynamo_Actions:
+class _Actions:
 
     def __init__(self, table_name):
         self.table_name = table_name

@@ -9,7 +9,7 @@ class Sentence_Similarity:
     def __init__(self):
         pass
 
-    def cosine_similarity(self, input_sentences, calculate_sentence) -> int:
+    def cosine_similarity(self, input_sentences, calculate_sentence) -> float:
         cosine = np.dot(input_sentences,calculate_sentence.T)/(norm(input_sentences)*norm(calculate_sentence))
         return float(cosine[0])
 

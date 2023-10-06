@@ -1,13 +1,16 @@
 import requests
-from utilities.dynamo_operations import Dynamo_Actions
+from utilities.mongo_operations import Mongo_Actions 
 from utilities.score_calculator import Score_Calculator
 import json
 import pandas as pd
+from datetime import datetime
+
+
 variables_file = open('backend/utilities/variables.json')
 
 variables = json.load(variables_file)
 
-dynamo = Dynamo_Actions(table_name=variables["dynamo_table_name"])
+mongo = Mongo_Actions()
 
 data = {
     "name": "John Doe",
@@ -17,13 +20,46 @@ data = {
     "talent_skills": ["mechanic", "database administrator", "science"]
 }
 
-requests.post("https://8000-candatagaga-resumescore-5mpyh2khpcd.ws-us105.gitpod.io/input_sentences", json=data)
+port = "https://8000-candatagaga-resumescore-5mpyh2khpcd.ws-us105.gitpod.io"
 
-experience_scores = requests.get("https://8000-candatagaga-resumescore-5mpyh2khpcd.ws-us105.gitpod.io/results_experience").json()
+requests.post(f"{port}/input_sentences", json=data)
 
-skill_scores = requests.get("https://8000-candatagaga-resumescore-5mpyh2khpcd.ws-us105.gitpod.io/results_skills").json()
+experience_dict = requests.get(f"{port}/results_experience").json()
 
-x = Score_Calculator.overall_score(result=experience_scores)
+skill_dict = requests.get(f"{port}/results_skills").json()
 
-print(pd.DataFrame(experience_scores))
-print(skill_scores)
+score_calculator = Score_Calculator()
+
+jd_experience = score_calculator.jd_wise_score(experience_dict)
+
+print(jd_experience)
+
+
+jd_skill = score_calculator.jd_wise_score(skill_dict)
+
+print(jd_skill)
+
+overall = score_calculator.overall_score(jd_experience, jd_skill)
+
+
+mongo.insert_json(
+    {
+        "id": data["name"]+str(datetime.now()),
+        "index": 1,
+        "score_breakup": {
+            "experience": experience_dict,
+            "skill": skill_dict
+        },
+        "jd_scores": {
+            "experience": jd_experience,
+            "skill": jd_skill
+        }, 
+        "overall": str(overall),
+        "date": datetime.now()
+    }
+)
+
+"""
+"""
+
+print("completed")
