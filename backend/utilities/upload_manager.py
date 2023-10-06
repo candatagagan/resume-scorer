@@ -1,24 +1,34 @@
 import os
 import boto3
-from botocore.exceptions import NoCredentialsError
 import zipfile
+import json
+import shutil
 
 
+variables_file = open('variables.json')
 
-path = "/workspace/resume-scorer/ziptest.zip"
+variables = json.load(variables_file)
+
+path = "ziptest.zip"
+
+saved_path = "./test_folder"
+
+s3_path = variables["s3_path"][0]["saved"]
+
+bucket_name = variables["s3_path"][0]["bucket_name"]
 
 
 class Upload_Manager:
-    def __init__(self, path, s3_path):
-        path = self.path
-        s3_path = self.s3_path
+    def __init__(self, path, s3_path, saved_path):
+        self.path = path
+        self.s3_path = s3_path
+        self.saved_path = saved_path
 
     def unzip_folder(self):
-        with zipfile.ZipFile(self.path, 'r') as zip:
-            zip.extractall(self.s3_path)
+       shutil.unpack_archive(self.path, self.saved_path)
 
-    def save_files_to_s3(self):
-        pass
+    def save_files_to_s3(self, connection):
+        s3.Bucket
 
 
 class Transform_data:
@@ -32,8 +42,8 @@ class Transform_data:
         pass
 
 class connection_to_s3:
-    def __init__(self):
-        self
+    def __init__(self, bucket_name):
+        self.bucket_name = bucket_name
 
     def connect_s3(self):
         session = boto3.Session(
@@ -42,13 +52,12 @@ class connection_to_s3:
         )
 
         s3 = session.resource('s3')
-        bucket_name = 'gagan-s-bucket'
-        bucket = s3.Bucket(bucket_name)
-        return bucket_name
+        bucket = s3.Bucket(self.bucket_name)
 
 
-conn = connection_to_s3()
-
-x = conn.connect_s3()
-
-print(x)
+if __name__ == "__main__":
+    connection = connection_to_s3(bucket_name)
+    connection.connect_s3()
+    upload = Upload_Manager(path=path, s3_path=s3_path, saved_path=saved_path)
+    upload.unzip_folder()
+    print("completed")
