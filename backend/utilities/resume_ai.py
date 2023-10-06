@@ -14,3 +14,17 @@ class Sentence_Similarity:
     def calculate_embedding(self, sentences: list, model_name: str) -> list:
         model = SentenceTransformer(model_name)
         return model.encode(sentences)
+
+class Scoring:
+    def __init__(self, results_dict, threshold):
+        self.results_dict = results_dict
+        self.threshold = threshold
+
+    def filter_dict(self):
+        for scores in self.results_dict.values():
+            new_dict = {key:value for key, value in scores.items() if value > self.threshold}
+            return new_dict
+
+            
+
+

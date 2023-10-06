@@ -1,5 +1,6 @@
 {
     "model": "sentence-transformers/all-MiniLM-L6-v2",
+    "threshold": 0.5,
     "s3_path" :[{
         "bucket_name": "gagan-s-bucket",
         "raw": "s3://gagan-s-bucket/resume_raw_data/",
