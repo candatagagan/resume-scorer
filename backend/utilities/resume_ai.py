@@ -26,16 +26,13 @@ class Skill_Similarity:
     def get_skills_data(self) -> list:
         skill_data = pd.read_csv(self.path)
         skill_list = list(skill_data[self.skill_column])
-        print(skill_list)
         return skill_list
 
-    def similarity_scores(self, input_sentence: str, skills: list) -> dict:
+    def similarity_scores(self, input_skill: list, comparison_skills: list, model) -> dict:
         classifier = pipeline("zero-shot-classification",
-                      model="facebook/bart-large-mnli")
-        sequence_to_classify = "one day I will see the world"
-        candidate_labels = get_skills_data()
-        result = classifier(sequence_to_classify, candidate_labels, multi_label=True)
-        print(result)
+                      model=model)
+        result = classifier(input_skill, comparison_skills, multi_label=True)
+        return result
 
 
 class Scoring_Experience:
@@ -51,12 +48,14 @@ class Scoring_Experience:
             return new_dict
 
 class Scoring_Skills:
-    def __init__(self):
-        pass
+    def __init__(self, scores, threshold):
+        self.scores = scores
+        self.threshold = threshold
 
     def filter_dict(self):
-        skill_data = pd.read_csv(skill_csv)
-        skills_list = list(skill_data['text'])
+        new_dict = {key:value for key, value in self.scores.items() if value > self.threshold}
+        return new_dict
+        
         
             
 
