@@ -41,9 +41,8 @@ print(jd_skill)
 
 overall = score_calculator.overall_score(jd_experience, jd_skill)
 
-"""
-mongo.insert_json(
-    {
+
+main_data =    {
         "id": data["name"]+str(datetime.now()),
         "index": 1,
         "score_breakup": {
@@ -57,7 +56,4 @@ mongo.insert_json(
         "overall": str(overall),
         "date": datetime.now()
     }
-)
-
-"""
-print("completed")
+print(main_data)
