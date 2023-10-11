@@ -2,6 +2,7 @@ from utilities.resume_ai import Sentence_Similarity, Scoring_Experience, Skill_S
 from utilities.score_calculator import Score_Calculator
 import json
 from fastapi import FastAPI
+import requests
 
 
 """
