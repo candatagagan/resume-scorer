@@ -9,6 +9,22 @@ services:
       - 27017:27017
     volumes:
       - mongodb_data_container:/data/db
+    networks:
+      - mynet
+
+
+  fastapi:
+    build:
+      context: .
+      dockerfile: dockerfile.fastapi
+    ports:
+      - "8000:8000"
+    networks:
+      - mynet
+    
 
 volumes:
   mongodb_data_container:
+
+networks:
+  mynet:
