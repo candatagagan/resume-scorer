@@ -3,6 +3,6 @@ fastapi==0.103.2
 uvicorn==0.23.2
 numpy==1.26.0
 pandas==2.1.1
-boto3==1.28.61
+boto3
 pymongo==4.5.0
-awscli==1.29.6
+awscli
