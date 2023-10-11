@@ -20,7 +20,7 @@ data = {
     "talent_skills": ["mechanic", "database administrator", "science"]
 }
 
-port = "https://8000-candatagaga-resumescore-cpa35dk4y0m.ws-us105.gitpod.io"
+port = "https://8000-candatagaga-resumescore-jhvj3ucp2i7.ws-us105.gitpod.io"
 
 requests.post(f"{port}/input_sentences", json=data)
 
@@ -41,7 +41,7 @@ print(jd_skill)
 
 overall = score_calculator.overall_score(jd_experience, jd_skill)
 
-
+"""
 mongo.insert_json(
     {
         "id": data["name"]+str(datetime.now()),
@@ -59,5 +59,5 @@ mongo.insert_json(
     }
 )
 
-
+"""
 print("completed")

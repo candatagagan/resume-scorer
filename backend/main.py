@@ -1,6 +1,8 @@
 from utilities.resume_ai import Sentence_Similarity, Scoring_Experience, Skill_Similarity, Scoring_Skills
+from utilities.score_calculator import Score_Calculator
 import json
 from fastapi import FastAPI
+
 
 """
 data = {
@@ -22,7 +24,7 @@ sen = Sentence_Similarity()
 
 skill = Skill_Similarity(variables['skills_data'], variables["skill_column"])
 
-
+sc = Score_Calculator()
 
 def score_calculator(input_sentence, compare_sentences, model) -> dict:
     input_embeddings = sen.calculate_embedding([input_sentence], model)
@@ -77,4 +79,27 @@ async def send_results_skill():
 
     return main_dict_skills
 
+@app.get('/processed_profile_data')
+async def complete_processed():
+    data = received_data
+    experience_dict = requests.get(f"{port}/results_experience").json()
+    skill_dict = requests.get(f"{port}/results_skills").json()
+    jd_experience = sc.jd_wise_score(experience_dict)
+    jd_skill = sc.jd_wise_score(skill_dict)
+    overall = score_calculator.overall_score(jd_experience, jd_skill)
+
+    return {
+                "id": data["name"]+str(datetime.now()),
+                "index": 1,
+                "score_breakup": {
+                    "experience": experience_dict,
+                    "skill": skill_dict
+                },
+                "jd_scores": {
+                    "experience": jd_experience,
+                    "skill": jd_skill
+                }, 
+                "overall": str(overall),
+                "date": datetime.now()
+            }
 
