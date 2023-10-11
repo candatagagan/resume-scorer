@@ -27,6 +27,8 @@ skill = Skill_Similarity(variables['skills_data'], variables["skill_column"])
 
 sc = Score_Calculator()
 
+port = "https://8000-candatagaga-resumescore-jhvj3ucp2i7.ws-us105.gitpod.io"
+
 def score_calculator(input_sentence, compare_sentences, model) -> dict:
     input_embeddings = sen.calculate_embedding([input_sentence], model)
     output_embeddings = [sen.calculate_embedding([i], model) for i in compare_sentences]
