@@ -1,7 +1,7 @@
 from utilities.resume_ai import Sentence_Similarity, Scoring_Experience, Skill_Similarity, Scoring_Skills
 from utilities.score_calculator import Score_Calculator
 import json
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 import requests
 
 
@@ -83,10 +83,8 @@ async def send_results_skill():
     return main_dict_skills
 
 @app.get('/jd_experience')
-async def jd_experience():
-    experience_dict = requests.get(f"{port}/results_experience").json()
+async def jd_experience(experience_dict: dict=Depends(send_result_exp)):
     jd_experience = sc.jd_wise_score(experience_dict)
-
     return jd_experience
 
 @app.get('/jd_skills')
