@@ -88,25 +88,19 @@ async def jd_experience(experience_dict: dict=Depends(send_result_exp)):
     return jd_experience
 
 @app.get('/jd_skills')
-async def jd_skills():
-    skill_dict = requests.get(f"{port}/results_skills").json()
+async def jd_skills(skill_dict: dict=Depends(send_results_skill)):
     jd_skill = sc.jd_wise_score(skill_dict)
     return jd_skill
 
 
 @app.get('/processed_profile_data')
-async def complete_processed():
+async def complete_processed(
+                experience_dict: dict=Depends(send_result_exp),
+                skill_dict: dict=Depends(send_results_skill),
+                jd_experience: dict=Depends(jd_experience),
+                jd_skill: dict=Depends(jd_skills)
+                ):
     data = received_data
-    jd_experience = requests.get(f"{port}/jd_experience")
-    return jd_experience
-    """
-    print("experience_dict")
-    skill_dict = requests.get(f"{port}/results_skills").json()
-    print("skill_dict")
-    jd_experience = sc.jd_wise_score(experience_dict)
-    print("jd_score")
-    jd_skill = sc.jd_wise_score(skill_dict)
-    print("jd_skill")
     overall = score_calculator.overall_score(jd_experience, jd_skill)
 
     overall_dict = {
@@ -125,5 +119,3 @@ async def complete_processed():
             }
 
     return overall_dict
-
-"""
