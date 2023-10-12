@@ -12,7 +12,7 @@ class Mongo_Actions:
         return client
 
     def insert_json(self, item):
-        client = pymongo.MongoClient('mongodb://admin:admin@mongodb')
+        client = pymongo.MongoClient('mongodb://admin:admin@mongodb:27017/meteor')
         db = client["resume_db"]
         col = db["processed"]
         col.insert_one(item)
