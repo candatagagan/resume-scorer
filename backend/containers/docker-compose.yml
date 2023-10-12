@@ -9,7 +9,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
     networks:
-      - mongodb_net
+      - mynet
     ports:
       - 27017:27017
   mongoclient:
@@ -22,7 +22,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
     networks:
-      - mongodb_net
+      - mynet
     ports:
       - 3300:3000
 
