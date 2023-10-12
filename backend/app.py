@@ -20,7 +20,7 @@ data = {
     "talent_skills": ["mechanic", "database administrator", "science"]
 }
 
-port = "https://8000-candatagaga-resumescore-jhvj3ucp2i7.ws-us105.gitpod.io"
+port = "https://8000-candatagaga-resumescore-yaougqcaufh.ws-us105.gitpod.io"
 
 requests.post(f"{port}/input_sentences", json=data)
 

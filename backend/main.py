@@ -27,7 +27,7 @@ skill = Skill_Similarity(variables['skills_data'], variables["skill_column"])
 
 sc = Score_Calculator()
 
-port = "https://8000-candatagaga-resumescore-jhvj3ucp2i7.ws-us105.gitpod.io"
+port = "https://8000-candatagaga-resumescore-yaougqcaufh.ws-us105.gitpod.io"
 
 def score_calculator(input_sentence, compare_sentences, model) -> dict:
     input_embeddings = sen.calculate_embedding([input_sentence], model)
@@ -86,12 +86,16 @@ async def send_results_skill():
 async def complete_processed():
     data = received_data
     experience_dict = requests.get(f"{port}/results_experience").json()
+    print("experience_dict")
     skill_dict = requests.get(f"{port}/results_skills").json()
+    print("skill_dict")
     jd_experience = sc.jd_wise_score(experience_dict)
+    print("jd_score")
     jd_skill = sc.jd_wise_score(skill_dict)
+    print("jd_skill")
     overall = score_calculator.overall_score(jd_experience, jd_skill)
 
-    return {
+    overall_dict = {
                 "id": data["name"]+str(datetime.now()),
                 "index": 1,
                 "score_breakup": {
@@ -105,4 +109,6 @@ async def complete_processed():
                 "overall": str(overall),
                 "date": datetime.now()
             }
+
+    return overall_dict
 
