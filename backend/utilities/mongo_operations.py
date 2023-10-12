@@ -10,7 +10,7 @@ class Mongo_Actions:
 
 
     def connect_to_mongo(self):
-        client = pymongo.MongoClient('mongodb://clusterAdmin:admin123@docdb-2023-10-06-14-07-17.cyywauqyq9p5.ap-south-1.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=global-bundle.pem&retryWrites=false')
+        client = pymongo.MongoClient('localhost', 27017)
         return client
 
     def insert_json(self, item):

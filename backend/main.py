@@ -1,5 +1,6 @@
 from utilities.resume_ai import Sentence_Similarity, Scoring_Experience, Skill_Similarity, Scoring_Skills
 from utilities.score_calculator import Score_Calculator
+from utilities.mongo_operations import Mongo_Actions
 import json
 from fastapi import FastAPI, Depends
 import requests
@@ -15,6 +16,7 @@ data = {
     "talent_skills": ["mechanic", "database administrator", "science"]
 }
 """
+mongo = Mongo_Actions()
 
 app = FastAPI()
 
@@ -28,7 +30,6 @@ skill = Skill_Similarity(variables['skills_data'], variables["skill_column"])
 
 sc = Score_Calculator()
 
-port = "https://8000-candatagaga-resumescore-yaougqcaufh.ws-us105.gitpod.io"
 
 def score_calculator(input_sentence, compare_sentences, model) -> dict:
     input_embeddings = sen.calculate_embedding([input_sentence], model)
@@ -118,5 +119,8 @@ async def complete_processed(
                 "overall": str(overall),
                 "date": datetime.now()
             }
+    
+    mongo.insert_json(overall_dict)
 
     return overall_dict
+
