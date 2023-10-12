@@ -8,11 +8,11 @@ class Mongo_Actions:
         pass
 
     def connect_to_mongo(self):
-        client = pymongo.MongoClient('127.0.0.1', 27017)
+        client = pymongo.MongoClient('mongodb://', 27017)
         return client
 
     def insert_json(self, item):
-        client = self.connect_to_mongo()
+        client = MongoClient('mongodb://mongodb')
         db = client["resume_db"]
         col = db["processed"]
         col.insert_one(item)
