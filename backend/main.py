@@ -101,7 +101,7 @@ async def complete_processed(
                 jd_skill: dict=Depends(jd_skills)
                 ):
     data = received_data
-    overall = score_calculator.overall_score(jd_experience, jd_skill)
+    overall = sc.overall_score(jd_experience, jd_skill)
 
     overall_dict = {
                 "id": data["name"]+str(datetime.now()),
