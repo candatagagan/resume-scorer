@@ -99,7 +99,7 @@ async def jd_skills():
 @app.get('/processed_profile_data')
 async def complete_processed():
     data = received_data
-    jd_experience = requests.get(f"{port}/jd_experience").json()
+    jd_experience = requests.get(f"{port}/jd_experience")
     return jd_experience
     """
     print("experience_dict")

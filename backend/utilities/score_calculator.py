@@ -11,8 +11,6 @@ class Score_Calculator:
             if len(value) > 0:
                 score = sum(value.values()) / len(value)
                 jd_dict[key] = score
-            else:
-                continue
         return jd_dict
 
 
