@@ -1,8 +1,10 @@
 from utilities.resume_ai import Sentence_Similarity, Scoring_Experience, Skill_Similarity, Scoring_Skills
 from utilities.score_calculator import Score_Calculator
+from utilities.mongo_operations import Mongo_Actions
 import json
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 import requests
+from datetime import datetime
 
 
 """
@@ -14,6 +16,7 @@ data = {
     "talent_skills": ["mechanic", "database administrator", "science"]
 }
 """
+mongo = Mongo_Actions()
 
 app = FastAPI()
 
@@ -27,7 +30,6 @@ skill = Skill_Similarity(variables['skills_data'], variables["skill_column"])
 
 sc = Score_Calculator()
 
-port = "https://8000-candatagaga-resumescore-jhvj3ucp2i7.ws-us105.gitpod.io"
 
 def score_calculator(input_sentence, compare_sentences, model) -> dict:
     input_embeddings = sen.calculate_embedding([input_sentence], model)
@@ -82,16 +84,28 @@ async def send_results_skill():
 
     return main_dict_skills
 
-@app.get('/processed_profile_data')
-async def complete_processed():
-    data = received_data
-    experience_dict = requests.get(f"{port}/results_experience").json()
-    skill_dict = requests.get(f"{port}/results_skills").json()
+@app.get('/jd_experience')
+async def jd_experience(experience_dict: dict=Depends(send_result_exp)):
     jd_experience = sc.jd_wise_score(experience_dict)
-    jd_skill = sc.jd_wise_score(skill_dict)
-    overall = score_calculator.overall_score(jd_experience, jd_skill)
+    return jd_experience
 
-    return {
+@app.get('/jd_skills')
+async def jd_skills(skill_dict: dict=Depends(send_results_skill)):
+    jd_skill = sc.jd_wise_score(skill_dict)
+    return jd_skill
+
+
+@app.get('/processed_profile_data')
+async def complete_processed(
+                experience_dict: dict=Depends(send_result_exp),
+                skill_dict: dict=Depends(send_results_skill),
+                jd_experience: dict=Depends(jd_experience),
+                jd_skill: dict=Depends(jd_skills)
+                ):
+    data = received_data
+    overall = sc.overall_score(jd_experience, jd_skill)
+
+    overall_dict = {
                 "id": data["name"]+str(datetime.now()),
                 "index": 1,
                 "score_breakup": {
@@ -105,4 +119,8 @@ async def complete_processed():
                 "overall": str(overall),
                 "date": datetime.now()
             }
+    
+    mongo.insert_json(overall_dict)
+
+    return overall_dict
 
