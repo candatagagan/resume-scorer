@@ -8,8 +8,9 @@ services:
     volumes:
       - ./data:/data/db
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_ROOT_USERNAME: resume
+      MONGO_INITDB_ROOT_PASSWORD: resume
+      MONGO_INITDB_DATABASE: resume
     networks:
       - mynet
 
